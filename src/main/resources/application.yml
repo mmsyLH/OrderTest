@@ -1,0 +1,36 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+spring:
+  main:
+    allow-circular-references: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://cchen.icu:13020/db_find_friend?serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://localhost:3306/orderTest?serverTimezone=Asia/Shanghai
+    username: root
+    password: root
+  redis:
+    host: cchen.icu
+    port: 13021
+    database: 4
+    password: redis_root
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: on
+knife4j:
+  enable: true
+  openapi:
+    title: 系统接口文档
+    description: "上机测试题"
+    email: 1072344372@qq.com
+    version: v1.0.0
+    concat: 罗汉
+    group:
+      orderTest:
+        group-name: orderTest
+        api-rule: package
+        api-rule-resources:
+          - icu.cchen.ordertest
