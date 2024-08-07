@@ -8,11 +8,17 @@ import icu.cchen.ordertest.model.PageResult;
 import icu.cchen.ordertest.model.domain.Order;
 import icu.cchen.ordertest.model.dto.OrderAssignmentDTO;
 import icu.cchen.ordertest.model.dto.OrderDTO;
+import icu.cchen.ordertest.model.vo.MonthlyOrderStatsByDeptVO;
+import icu.cchen.ordertest.model.vo.MonthlyOrderStatsVO;
 import icu.cchen.ordertest.service.OrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.time.YearMonth;
 
 /**
  * 工单管理控制器
@@ -113,4 +119,38 @@ public class OrderController {
         orderService.assignOrder(orderAssignmentDTO);
         return ResultUtils.success("工单分派成功");
     }
+
+    /**
+     * 查询某月每天的工单总量、超期率
+     *
+     * @param month 月
+     * @return {@link BaseResponse }<{@link MonthlyOrderStatsVO }>
+     */
+    @GetMapping("/monthlyOrderStats")
+    @ApiOperation("某月每天的工单总量、超期率")
+    public BaseResponse<MonthlyOrderStatsVO> getMonthlyOrderStats(
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM") YearMonth month) {
+        if (month == null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "月份不能为空");
+        }
+        MonthlyOrderStatsVO monthlyOrderStatsVO = orderService.getMonthlyOrderStats(month);
+        return ResultUtils.success(monthlyOrderStatsVO);
+    }
+    /**
+     * 查询某月每天的工单总量、超期率
+     *
+     * @param month 月
+     * @return {@link BaseResponse }<{@link MonthlyOrderStatsVO }>
+     */
+    @GetMapping("/monthlyOrderStatsByDept")
+    @ApiOperation("某月各部门的工单总量、超期率")
+    public BaseResponse<MonthlyOrderStatsByDeptVO> getMonthlyOrderStatsByDept(
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM") YearMonth month) {
+        if (month == null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "月份不能为空");
+        }
+        MonthlyOrderStatsByDeptVO monthlyOrderStatsByDept = orderService.getMonthlyOrderStatsByDept(month);
+        return ResultUtils.success(monthlyOrderStatsByDept);
+    }
+
 }

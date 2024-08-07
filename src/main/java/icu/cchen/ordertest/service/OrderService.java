@@ -5,6 +5,10 @@ import icu.cchen.ordertest.model.domain.Order;
 import com.baomidou.mybatisplus.extension.service.IService;
 import icu.cchen.ordertest.model.dto.OrderAssignmentDTO;
 import icu.cchen.ordertest.model.dto.OrderDTO;
+import icu.cchen.ordertest.model.vo.MonthlyOrderStatsByDeptVO;
+import icu.cchen.ordertest.model.vo.MonthlyOrderStatsVO;
+
+import java.time.YearMonth;
 
 /**
 * @author Administrator
@@ -31,5 +35,26 @@ public interface OrderService extends IService<Order> {
      */
     PageResult<Order> searchOrdersByPage(OrderDTO orderPage);
 
+    /**
+     * 分配工单
+     *
+     * @param orderAssignmentDTO 工单分配
+     */
     void assignOrder(OrderAssignmentDTO orderAssignmentDTO);
+
+    /**
+     * 查询某月每天的工单总量、超期率
+     *
+     * @param month 月
+     * @return {@link MonthlyOrderStatsVO }
+     */
+    MonthlyOrderStatsVO getMonthlyOrderStats(YearMonth month);
+
+    /**
+     * 查询某月各个部门的工单总量、超期率
+     *
+     * @param yearMonth 年月
+     * @return {@link MonthlyOrderStatsByDeptVO }
+     */
+    MonthlyOrderStatsByDeptVO getMonthlyOrderStatsByDept(YearMonth yearMonth);
 }
